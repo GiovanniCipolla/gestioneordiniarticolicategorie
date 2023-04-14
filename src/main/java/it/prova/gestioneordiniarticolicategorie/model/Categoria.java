@@ -12,7 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "categroia")
+@Table(name = "categoria")
 public class Categoria {
 
 	@Id

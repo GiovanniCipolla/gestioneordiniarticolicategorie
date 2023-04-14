@@ -9,42 +9,55 @@ import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 public class ArticoloDAOimpl implements ArticoloDAO {
 
 	private EntityManager entityManager;
-	
-	
+
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager=entityManager;
-		
+		this.entityManager = entityManager;
+
 	}
 
 	@Override
 	public List<Articolo> list() throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.createQuery("from Articolo", Articolo.class).getResultList();
 	}
 
 	@Override
 	public Articolo get(Long id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return entityManager.find(Articolo.class, id);
 	}
 
 	@Override
-	public void update(Articolo o) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void update(Articolo input) throws Exception {
+		if (input == null) {
+			throw new Exception("Problema valore in input");
+		}
+		input = entityManager.merge(input);
+
 	}
 
 	@Override
-	public void insert(Articolo o) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void insert(Articolo input) throws Exception {
+		if (input == null) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.persist(input);
 	}
 
 	@Override
-	public void delete(Articolo o) throws Exception {
-		// TODO Auto-generated method stub
-		
+	public void delete(Articolo input) throws Exception {
+		if (input == null) {
+			throw new Exception("Problema valore in input");
+		}
+		entityManager.remove(entityManager.merge(input));
+
+	}
+
+	@Override
+	public void removeArticoloUnlinkCategoria(Long id) throws Exception {
+		entityManager.createNativeQuery("delete from articolo_categoria c where c.articolo_id = ?1").setParameter(1, id)
+				.executeUpdate();
+		entityManager.createNativeQuery("delete from articolo c where c.id = ?1").setParameter(1, id).executeUpdate();
+
 	}
 
 }

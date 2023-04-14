@@ -5,4 +5,5 @@ import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 
 public interface CategoriaDAO extends IBaseDAO<Categoria> {
 
+	public void removeCategoriaUnlinkArticolo(Long id) throws Exception;
 }

@@ -18,5 +18,7 @@ public interface OrdineService {
 	public void inserisciOrdine(Ordine input) throws Exception;
 
 	public void elimminaOrdine(Ordine input) throws Exception;
+	
+	public List<Ordine> ordiniDiUnaCategoria(Long id) throws Exception;
 
 }

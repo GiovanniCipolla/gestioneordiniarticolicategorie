@@ -156,6 +156,24 @@ public class ArticoloServiceImpl implements ArticoloService {
 		
 	}
 
+	@Override
+	public int sommaPrezzoArticoliDiCategoria(Long id) throws Exception {
+		
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			articoloDAO.setEntityManager(entityManager);
+			
+			
+			return articoloDAO.sumPriceArticoliDiCategroia(id);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
 
 	
 	

@@ -24,7 +24,7 @@ public class Ordine {
 	@Column(name = "nomedestinazione")
 	private String nomeDestinatario;
 
-	@Column(name = "descrizione")
+	@Column(name = "indirizzodescrizione")
 	private String indirizzoSpedizione;
 
 	@Column(name = "datascadenza")

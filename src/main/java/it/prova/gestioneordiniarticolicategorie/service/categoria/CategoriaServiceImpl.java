@@ -123,7 +123,6 @@ public class CategoriaServiceImpl implements CategoriaService {
 		try {
 			entityManager.getTransaction().begin();
 			categoriaDAO.setEntityManager(entityManager);
-			articoloDAO.setEntityManager(entityManager);
 			
 			articoloInput = entityManager.merge(articoloInput);
 			categoriaInput = entityManager.merge(categoriaInput);
@@ -160,6 +159,21 @@ public class CategoriaServiceImpl implements CategoriaService {
 			}
 			
 		
+	}
+	@Override
+	public List<Categoria> categoriaDiUnOrdine(Long id) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			categoriaDAO.setEntityManager(entityManager);
+			
+			return categoriaDAO.allByThisOrdine(id);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 

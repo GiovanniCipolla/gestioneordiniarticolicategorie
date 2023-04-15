@@ -6,6 +6,7 @@ import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.categoria.CategoriaDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 import it.prova.gestioneordiniarticolicategorie.model.Categoria;
+import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public interface CategoriaService {
 
@@ -26,7 +27,8 @@ public interface CategoriaService {
 
 	public void rimozioneCategoriaDaScollegareAArticolo(Long id)throws Exception ;
 
-
+	public List<Categoria> categoriaDiUnOrdine(Long id) throws Exception;
+	
 
 
 

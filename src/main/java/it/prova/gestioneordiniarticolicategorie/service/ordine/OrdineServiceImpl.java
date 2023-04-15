@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import exception.CustomException;
 import it.prova.gestioneordiniarticolicategorie.dao.EntityManagerUtil;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
@@ -95,7 +96,11 @@ public class OrdineServiceImpl implements OrdineService{
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			entityManager.getTransaction().begin();
+			
 			ordineDAO.setEntityManager(entityManager);
+			
+			if(input.getArticoli().size()>0)
+				throw new CustomException("errore ci sono articoli collegati");
 			
 			ordineDAO.delete(input);
 			
@@ -108,6 +113,23 @@ public class OrdineServiceImpl implements OrdineService{
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
 		
+	}
+
+	@Override
+	public List<Ordine> ordiniDiUnaCategoria(Long id) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			
+			ordineDAO.setEntityManager(entityManager);
+			
+			return ordineDAO.allByThisCategoria(id);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
 	}
 
 

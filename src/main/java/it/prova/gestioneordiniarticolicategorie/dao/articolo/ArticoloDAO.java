@@ -6,5 +6,6 @@ import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 public interface ArticoloDAO extends IBaseDAO<Articolo> {
 
 	public void removeArticoloUnlinkCategoria(Long id) throws Exception;
-	
+
+	public int sumPriceArticoliDiCategroia(Long id)throws Exception;
 }

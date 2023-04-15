@@ -4,18 +4,16 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import exception.CustomException;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
-public class OrdineDAOImpl implements OrdineDAO{
+public class OrdineDAOImpl implements OrdineDAO {
 
 	private EntityManager entityManager;
-	
-	
+
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager=entityManager;
-		
+		this.entityManager = entityManager;
+
 	}
 
 	@Override
@@ -42,15 +40,26 @@ public class OrdineDAOImpl implements OrdineDAO{
 			throw new Exception("Problema valore in input");
 		}
 		entityManager.persist(input);
-		
+
 	}
 
 	@Override
 	public void delete(Ordine input) throws Exception {
-		if(!input.getArticoli().isEmpty())
-			throw new CustomException("errore ci sono articoli collegati");
+		if (input == null)
+			throw new Exception("Problema valore in input");
 		entityManager.remove(entityManager.merge(input));
-		
+
+	}
+
+	@Override
+	public List<Ordine> allByThisCategoria(Long id) throws Exception {
+		if (id == null)
+			throw new Exception("Problema valore in input");
+
+		return entityManager
+				.createQuery("select o from Ordine o join o.articoli a join a.categorie c where c.id = :id ",
+						Ordine.class)
+				.setParameter("id", id).getResultList();
 	}
 
 }

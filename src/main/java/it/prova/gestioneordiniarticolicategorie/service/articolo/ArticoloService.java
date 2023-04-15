@@ -24,5 +24,6 @@ public interface ArticoloService {
 
 	public void rimozioneArticoloDaScollegareACategoria(Long id)throws Exception ;
 
+	public  int sommaPrezzoArticoliDiCategoria(Long id) throws Exception;
 	
 }

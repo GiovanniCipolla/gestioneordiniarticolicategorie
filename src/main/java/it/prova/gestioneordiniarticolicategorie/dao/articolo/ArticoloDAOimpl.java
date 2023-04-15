@@ -3,6 +3,9 @@ package it.prova.gestioneordiniarticolicategorie.dao.articolo;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import javax.persistence.Query;
 
 import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 
@@ -60,4 +63,13 @@ public class ArticoloDAOimpl implements ArticoloDAO {
 
 	}
 
+	@Override
+	public int sumPriceArticoliDiCategroia(Long id) throws Exception {
+		
+		return entityManager
+				.createQuery("select sum(a.prezzoSingolo) from Articolo a join a.categorie c where c.id = ?1")
+				.setParameter(1, id).getFirstResult();
+		
+
+	}
 }

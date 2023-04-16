@@ -11,4 +11,5 @@ public interface CategoriaDAO extends IBaseDAO<Categoria> {
 	
 	public List<Categoria> allByThisOrdine(Long id)throws Exception;
 	
+	public List<Categoria> findDistinctCategorieByOrdine(Long idOrdine) throws Exception;
 }

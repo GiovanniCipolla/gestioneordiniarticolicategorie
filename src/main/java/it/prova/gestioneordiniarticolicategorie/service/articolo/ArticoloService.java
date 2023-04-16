@@ -18,7 +18,7 @@ public interface ArticoloService {
 	
 	public void inserisciArticolo(Articolo input) throws Exception;
 	
-	public void elimminaArticolo(Articolo input) throws Exception;
+	public void elimminaArticolo(Long input) throws Exception;
 	
 	public void aggiungiCategoriaAArticolo(Articolo articoloInput,Categoria categoriaInput) throws Exception;
 
@@ -26,4 +26,7 @@ public interface ArticoloService {
 
 	public  int sommaPrezzoArticoliDiCategoria(Long id) throws Exception;
 	
+	public Long sommaPrezziArticoliDiUnDestinatario(String nomeDestinatario) throws Exception ;
+	
+	public List<Articolo> listaArticoliConErroriInOrdine() throws Exception;
 }

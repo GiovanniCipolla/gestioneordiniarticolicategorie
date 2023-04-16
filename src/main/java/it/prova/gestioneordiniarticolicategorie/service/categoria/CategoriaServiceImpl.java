@@ -11,14 +11,15 @@ import it.prova.gestioneordiniarticolicategorie.model.Articolo;
 import it.prova.gestioneordiniarticolicategorie.model.Categoria;
 
 public class CategoriaServiceImpl implements CategoriaService {
-	
+
 	private CategoriaDAO categoriaDAO;
-	private ArticoloDAO articoloDAO;	
-	
+	private ArticoloDAO articoloDAO;
+
 	@Override
 	public void setArticoloDAO(ArticoloDAO articoloDAO) throws Exception {
-		this.articoloDAO=articoloDAO;		
+		this.articoloDAO = articoloDAO;
 	}
+
 	@Override
 	public void setCategoriaDAO(CategoriaDAO categoriaDAO) throws Exception {
 		this.categoriaDAO = categoriaDAO;
@@ -29,10 +30,10 @@ public class CategoriaServiceImpl implements CategoriaService {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			return categoriaDAO.list();
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -45,10 +46,10 @@ public class CategoriaServiceImpl implements CategoriaService {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			return categoriaDAO.get(id);
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -61,20 +62,20 @@ public class CategoriaServiceImpl implements CategoriaService {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			entityManager.getTransaction().begin();
-			
+
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			categoriaDAO.update(input);
-			
+
 			entityManager.getTransaction().commit();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			throw e;
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
@@ -83,38 +84,38 @@ public class CategoriaServiceImpl implements CategoriaService {
 		try {
 			entityManager.getTransaction().begin();
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			categoriaDAO.insert(input);
-			
+
 			entityManager.getTransaction().commit();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			throw e;
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
-	public void elimminaCategoria(Categoria input) throws Exception {
+	public void elimminaCategoria(Long input) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			entityManager.getTransaction().begin();
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			categoriaDAO.delete(input);
-			
+
 			entityManager.getTransaction().commit();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			throw e;
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
 
 	@Override
@@ -123,52 +124,52 @@ public class CategoriaServiceImpl implements CategoriaService {
 		try {
 			entityManager.getTransaction().begin();
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			articoloInput = entityManager.merge(articoloInput);
 			categoriaInput = entityManager.merge(categoriaInput);
-			
+
 			categoriaInput.getArticoli().add(articoloInput);
-			
+
 			entityManager.getTransaction().commit();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			entityManager.getTransaction().rollback();
 			e.printStackTrace();
 			throw e;
 		} finally {
 			EntityManagerUtil.closeEntityManager(entityManager);
 		}
-		
+
 	}
+
 	@Override
 	public void rimozioneCategoriaDaScollegareAArticolo(Long id) throws Exception {
-			EntityManager entityManager = EntityManagerUtil.getEntityManager();
-			try {
-				entityManager.getTransaction().begin();
-				categoriaDAO.setEntityManager(entityManager);
-				
-				
-				categoriaDAO.removeCategoriaUnlinkArticolo(id);
-				
-				entityManager.getTransaction().commit();
-			}catch (Exception e) {
-				entityManager.getTransaction().rollback();
-				e.printStackTrace();
-				throw e;
-			} finally {
-				EntityManagerUtil.closeEntityManager(entityManager);
-			}
-			
-		
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			entityManager.getTransaction().begin();
+			categoriaDAO.setEntityManager(entityManager);
+
+			categoriaDAO.removeCategoriaUnlinkArticolo(id);
+
+			entityManager.getTransaction().commit();
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+
 	}
+
 	@Override
 	public List<Categoria> categoriaDiUnOrdine(Long id) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			categoriaDAO.setEntityManager(entityManager);
-			
+
 			return categoriaDAO.allByThisOrdine(id);
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		} finally {
@@ -176,7 +177,20 @@ public class CategoriaServiceImpl implements CategoriaService {
 		}
 	}
 
+	@Override
+	public List<Categoria> prendiListaDistintaCategoriaByOrdine(Long idOrdine) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			categoriaDAO.setEntityManager(entityManager);
 
-	
-	
+			return categoriaDAO.findDistinctCategorieByOrdine(idOrdine);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
 }

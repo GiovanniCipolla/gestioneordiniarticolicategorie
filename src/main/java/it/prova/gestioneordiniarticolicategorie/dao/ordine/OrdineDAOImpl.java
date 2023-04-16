@@ -3,6 +3,7 @@ package it.prova.gestioneordiniarticolicategorie.dao.ordine;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
@@ -44,7 +45,7 @@ public class OrdineDAOImpl implements OrdineDAO {
 	}
 
 	@Override
-	public void delete(Ordine input) throws Exception {
+	public void delete(Long input) throws Exception {
 		if (input == null)
 			throw new Exception("Problema valore in input");
 		entityManager.remove(entityManager.merge(input));
@@ -60,6 +61,21 @@ public class OrdineDAOImpl implements OrdineDAO {
 				.createQuery("select o from Ordine o join o.articoli a join a.categorie c where c.id = :id ",
 						Ordine.class)
 				.setParameter("id", id).getResultList();
+	}
+
+	@Override
+	public Ordine getOrdinePiuRecenteByCategoria(Long id) throws Exception {
+
+		return entityManager.createQuery(
+				"select o from Ordine o join o.articoli a join a.categorie c where c.id = :id order by o.dataSpedizione desc",
+				Ordine.class).setParameter("id", id).getSingleResult();
+	}
+
+	@Override
+	public List<String> andressDegliOrdiniContenentiNumeroSeriale(String stringaNumeroSeriale) throws Exception {
+		return entityManager.createQuery(
+				"select distinct o.indirizzoSpedizione from Ordine o join o.articoli a where a.numeroSeriale like ?1",
+				String.class).setParameter(1, "%" + stringaNumeroSeriale + "%").getResultList();
 	}
 
 }

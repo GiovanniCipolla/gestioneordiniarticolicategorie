@@ -6,16 +6,22 @@ import javax.persistence.EntityManager;
 
 import exception.CustomException;
 import it.prova.gestioneordiniarticolicategorie.dao.EntityManagerUtil;
+import it.prova.gestioneordiniarticolicategorie.dao.articolo.ArticoloDAO;
 import it.prova.gestioneordiniarticolicategorie.dao.ordine.OrdineDAO;
 import it.prova.gestioneordiniarticolicategorie.model.Ordine;
 
 public class OrdineServiceImpl implements OrdineService{
 
 	private OrdineDAO ordineDAO;
+	private ArticoloDAO articoloDAO;
 
 	@Override
 	public void setOrdineDAO(OrdineDAO ordineDAO) throws Exception {
 		this.ordineDAO = ordineDAO;
+	}
+	@Override
+	public void setArticoloDAO(ArticoloDAO articoloDAO)throws Exception {
+		this.articoloDAO=articoloDAO;
 	}
 
 	@Override
@@ -92,14 +98,15 @@ public class OrdineServiceImpl implements OrdineService{
 	}
 
 	@Override
-	public void elimminaOrdine(Ordine input) throws Exception {
+	public void elimminaOrdine(Long input) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			entityManager.getTransaction().begin();
 			
 			ordineDAO.setEntityManager(entityManager);
+			articoloDAO.setEntityManager(entityManager);
 			
-			if(input.getArticoli().size()>0)
+			if(articoloDAO.findAllByOrdine(input).size() > 0)
 				throw new CustomException("errore ci sono articoli collegati");
 			
 			ordineDAO.delete(input);
@@ -123,6 +130,40 @@ public class OrdineServiceImpl implements OrdineService{
 			ordineDAO.setEntityManager(entityManager);
 			
 			return ordineDAO.allByThisCategoria(id);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public Ordine prendiOrdinePiuRecenteDaCategoria(long id) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			
+			ordineDAO.setEntityManager(entityManager);
+			
+			return ordineDAO.getOrdinePiuRecenteByCategoria(null);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public List<String> indirizzoDegliOrdiniContenentiNumeroSeriale(String stringaNumeroSeriale) throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			
+			ordineDAO.setEntityManager(entityManager);
+			
+			return ordineDAO.andressDegliOrdiniContenentiNumeroSeriale(stringaNumeroSeriale);
 			
 		}catch (Exception e) {
 			e.printStackTrace();

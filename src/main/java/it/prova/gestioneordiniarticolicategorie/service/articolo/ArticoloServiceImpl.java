@@ -93,7 +93,7 @@ public class ArticoloServiceImpl implements ArticoloService {
 	}
 
 	@Override
-	public void elimminaArticolo(Articolo input) throws Exception {
+	public void elimminaArticolo(Long input) throws Exception {
 		EntityManager entityManager = EntityManagerUtil.getEntityManager();
 		try {
 			entityManager.getTransaction().begin();
@@ -165,6 +165,41 @@ public class ArticoloServiceImpl implements ArticoloService {
 			
 			
 			return articoloDAO.sumPriceArticoliDiCategroia(id);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public Long sommaPrezziArticoliDiUnDestinatario(String nomeDestinatario) throws Exception {
+
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			articoloDAO.setEntityManager(entityManager);
+			
+			
+			return articoloDAO.sumPriceArticoliByDestinatario(nomeDestinatario);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			EntityManagerUtil.closeEntityManager(entityManager);
+		}
+	}
+
+	@Override
+	public List<Articolo> listaArticoliConErroriInOrdine() throws Exception {
+		EntityManager entityManager = EntityManagerUtil.getEntityManager();
+		try {
+			articoloDAO.setEntityManager(entityManager);
+			
+			
+			return articoloDAO.listArticoliWithErroriInOrdine();
 			
 		}catch (Exception e) {
 			e.printStackTrace();

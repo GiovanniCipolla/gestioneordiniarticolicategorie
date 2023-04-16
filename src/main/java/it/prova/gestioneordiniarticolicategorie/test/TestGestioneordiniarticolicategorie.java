@@ -25,36 +25,37 @@ public class TestGestioneordiniarticolicategorie {
 			// --------------------------- INIZIO TEST -----------------------
 
 //			testInserisciOrdine(ordineServiceInstance);
-
 //			testAggiornaOrdine(ordineServiceInstance);
-
 //			testInsericiArticolo(articoloServiceInstance, ordineServiceInstance);
-
 //			testAggiornaArticolo(articoloServiceInstance);
-
 //			testRimuoviArticolo(articoloServiceInstance);
-
 //			testInsericiCategoria(categoriaServiceInstance);
-
 //			testAggiornaCategoria(categoriaServiceInstance);
-
 //			rimozioneCategoriaDaScollegareAArticolo(categoriaServiceInstance);
-
-			// ------------NON FUNZIONANO
-			// -----------errore lazy
-//			testRimuoviOrdineConCustom(ordineServiceInstance); 
-			// senza int va
+//			rimozioneArticoloDaScollegareACategoria(articoloServiceInstance);
+//			testCategoriaDiUnOrdine(ordineServiceInstance, categoriaServiceInstance);
+//			testOrdiniDiUnaCategoria(ordineServiceInstance, categoriaServiceInstance);
+//			prendiListaDistintaCategoriaByOrdine(ordineServiceInstance, categoriaServiceInstance);
+//			testIndirizzoDegliOrdiniContenentiNumeroSeriale(ordineServiceInstance, articoloServiceInstance);
 //			testAggiungiCategoriaAArticolo(categoriaServiceInstance, articoloServiceInstance);
-			// compila ma non ha effetto su db
+			
+			
+			
+			
+			// ------------DA VEDERE MEGLIO
+//			testPrendiOrdinePiuRecenteDaCategoria(ordineServiceInstance, categoriaServiceInstance);
+//			testRimuoviOrdineConCustom(ordineServiceInstance); 
 //			testAggiungiArticoloACategoria(categoriaServiceInstance, articoloServiceInstance);
 //			testSommaPrezzoArticoliDiCategoria(articoloServiceInstance, categoriaServiceInstance);
+//			testSommaPrezziArticoliDiUnDestinatario(ordineServiceInstance, articoloServiceInstance);
 			// -----------------------------------------------------------------------------------
 
-//			rimozioneArticoloDaScollegareACategoria(articoloServiceInstance);
 
-//			testOrdiniDiUnaCategoria(ordineServiceInstance, categoriaServiceInstance);
 
-//			testCategoriaDiUnOrdine(ordineServiceInstance, categoriaServiceInstance);
+
+			
+			
+//			testListaArticoliConErroriInOrdine(articoloServiceInstance);
 			
 
 		} catch (Throwable e) {
@@ -153,7 +154,7 @@ public class TestGestioneordiniarticolicategorie {
 
 		int indiceControllo = articoloServiceInstance.listaArticolo().size();
 
-		Articolo articoloDaEliminare = articoloServiceInstance.listaArticolo().get(0);
+		Long articoloDaEliminare = articoloServiceInstance.listaArticolo().get(0).getId();;
 
 		articoloServiceInstance.elimminaArticolo(articoloDaEliminare);
 
@@ -285,7 +286,7 @@ public class TestGestioneordiniarticolicategorie {
 	private static void testRimuoviOrdineConCustom(OrdineService ordineServiceInstance) throws Exception {
 		System.out.println("------------------ testRimuoviOrdineConCustom INIZIO ----------------- ");
 
-		Ordine ordineDaRimuovere = ordineServiceInstance.listaOrdine().get(0);
+		Long ordineDaRimuovere = ordineServiceInstance.listaOrdine().get(0).getId();
 
 //		int i = ordineServiceInstance.listaOrdine().size();
 
@@ -331,15 +332,80 @@ public class TestGestioneordiniarticolicategorie {
 	private static void testSommaPrezzoArticoliDiCategoria(ArticoloService articoloServiceInsetance,
 			CategoriaService categoriaServiceInstance) throws Exception {
 		System.out.println("------------------ testSommaPrezzoArticoliDiCategoria INIZIO ----------------- ");
-		
+
 		Long idDaPrendere = categoriaServiceInstance.listaCatgegoria().get(0).getId();
-		
+
 		int result = articoloServiceInsetance.sommaPrezzoArticoliDiCategoria(idDaPrendere);
+
+		System.out.println(result);
+
+		System.out.println("------------------ testSommaPrezzoArticoliDiCategoria FINE ----------------- ");
+	}
+
+	private static void testPrendiOrdinePiuRecenteDaCategoria(OrdineService ordineServiceInsetance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println("------------------ testPrendiOrdinePiuRecenteDaCategoria INIZIO ----------------- ");
+
+		Long idDaPrendere = categoriaServiceInstance.listaCatgegoria().get(0).getId();
+
+		Ordine result = ordineServiceInsetance.prendiOrdinePiuRecenteDaCategoria(idDaPrendere);
+
+		System.out.println(result.getNomeDestinatario());
+
+		System.out.println("------------------ testPrendiOrdinePiuRecenteDaCategoria FINE ----------------- ");
+	}
+
+	private static void prendiListaDistintaCategoriaByOrdine(OrdineService ordineServiceInsetance,
+			CategoriaService categoriaServiceInstance) throws Exception {
+		System.out.println("------------------ prendiListaDistintaCategoriaByOrdine INIZIO ----------------- ");
+
+		Long idDaPrendere = ordineServiceInsetance.listaOrdine().get(0).getId();
+
+		List<Categoria> result = categoriaServiceInstance.prendiListaDistintaCategoriaByOrdine(idDaPrendere);
+
+		System.out.println(result);
+
+		System.out.println("------------------ prendiListaDistintaCategoriaByOrdine FINE ----------------- ");
+	}
+
+	private static void testSommaPrezziArticoliDiUnDestinatario(OrdineService ordineServiceInsetance,
+			ArticoloService articoloServiceInstance) throws Exception {
+		System.out.println("------------------ testSommaPrezziArticoliDiUnDestinatario INIZIO ----------------- ");
+		
+		String stringDaPrendere = ordineServiceInsetance.listaOrdine().get(0).getNomeDestinatario();
+		
+		Long result = articoloServiceInstance.sommaPrezziArticoliDiUnDestinatario(stringDaPrendere);
+		
+		System.out.println(result);
+		
+		System.out.println("------------------ testSommaPrezziArticoliDiUnDestinatario FINE ----------------- ");
+		
+	}
+	
+	private static void testIndirizzoDegliOrdiniContenentiNumeroSeriale(OrdineService ordineServiceInsetance,
+			ArticoloService articoloServiceInstance) throws Exception {
+		
+		System.out.println("------------------ testIndirizzoDegliOrdiniContenentiNumeroSeriale INIZIO ----------------- ");
+		
+		String nSeriale = articoloServiceInstance.listaArticolo().get(0).getNumeroSeriale();
+		
+		List<String> result = ordineServiceInsetance.indirizzoDegliOrdiniContenentiNumeroSeriale(nSeriale);
 		
 		System.out.println(result);
 		
 		
-		System.out.println("------------------ testSommaPrezzoArticoliDiCategoria FINE ----------------- ");
+		System.out.println("------------------ testIndirizzoDegliOrdiniContenentiNumeroSeriale FINE ----------------- ");
+	}
+	
+	private static void testListaArticoliConErroriInOrdine(ArticoloService articoloServiceInstance) throws Exception{
+		System.out.println("------------------ testIndirizzoDegliOrdiniContenentiNumeroSeriale INIZIO ----------------- ");
+		
+		List<Articolo> result = articoloServiceInstance.listaArticoliConErroriInOrdine();
+		
+		System.out.println(result);
+		
+		
+		System.out.println("------------------ testIndirizzoDegliOrdiniContenentiNumeroSeriale FINE ----------------- ");
 	}
 
 }

@@ -16,6 +16,6 @@ public interface IBaseDAO<T>{
 
 	public void insert(T o) throws Exception;
 
-	public void delete(T o) throws Exception;
+	public void delete(Long o) throws Exception;
 
 }

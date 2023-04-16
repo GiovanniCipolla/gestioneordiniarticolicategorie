@@ -21,7 +21,7 @@ public interface CategoriaService {
 	
 	public void inserisciCategoria(Categoria input) throws Exception;
 	
-	public void elimminaCategoria(Categoria input) throws Exception;
+	public void elimminaCategoria(Long input) throws Exception;
 	
 	public void aggiungiArticoloACategoria(Articolo articoloInput,Categoria categoriaInput) throws Exception;
 
@@ -29,7 +29,7 @@ public interface CategoriaService {
 
 	public List<Categoria> categoriaDiUnOrdine(Long id) throws Exception;
 	
-
+	public List<Categoria> prendiListaDistintaCategoriaByOrdine(Long idOrdine) throws Exception;
 
 
 

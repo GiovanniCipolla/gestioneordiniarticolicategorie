@@ -46,7 +46,7 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 	}
 
 	@Override
-	public void delete(Categoria input) throws Exception {
+	public void delete(Long input) throws Exception {
 		if (input == null) {
 			throw new Exception("Problema valore in input");
 		}
@@ -71,4 +71,13 @@ public class CategoriaDAOImpl implements CategoriaDAO {
 						Categoria.class)
 				.setParameter("id", id).getResultList();
 	}
+
+	@Override
+	public List<Categoria> findDistinctCategorieByOrdine(Long idOrdine) throws Exception {
+		return entityManager.createQuery(
+				"select distinct c from Categoria c join c.articoli a join a.ordine o where o.id = ?1",
+				Categoria.class).setParameter(1, idOrdine).getResultList();
+	}
+	
+
 }

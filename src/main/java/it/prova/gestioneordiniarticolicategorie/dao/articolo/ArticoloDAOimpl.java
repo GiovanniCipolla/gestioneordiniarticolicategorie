@@ -47,7 +47,7 @@ public class ArticoloDAOimpl implements ArticoloDAO {
 	}
 
 	@Override
-	public void delete(Articolo input) throws Exception {
+	public void delete(Long input) throws Exception {
 		if (input == null) {
 			throw new Exception("Problema valore in input");
 		}
@@ -65,11 +65,36 @@ public class ArticoloDAOimpl implements ArticoloDAO {
 
 	@Override
 	public int sumPriceArticoliDiCategroia(Long id) throws Exception {
-		
+
 		return entityManager
 				.createQuery("select sum(a.prezzoSingolo) from Articolo a join a.categorie c where c.id = ?1")
 				.setParameter(1, id).getFirstResult();
-		
-
 	}
+
+	@Override
+	public Long sumPriceArticoliByDestinatario(String nomeDestinatario) throws Exception {
+		Long result = null;
+		Query query = entityManager
+				.createQuery(
+						"select sum(a.prezzoSingolo) from Articolo a join a.ordine o where o.nomeDestinatario like ?1")
+				.setParameter(1, nomeDestinatario);
+//		result = query;
+		return result;
+	}
+
+	@Override
+	public List<Articolo> listArticoliWithErroriInOrdine() throws Exception {
+		return entityManager
+				.createQuery("select a from Articolo a join a.ordine o where a.dataInserimento > o.dataScadenza",
+						Articolo.class)
+				.getResultList();
+	}
+
+	@Override
+	public List<Articolo> findAllByOrdine(Long idOrdine) throws Exception {
+		TypedQuery<Articolo> query = entityManager.createQuery("from Articolo where ordine_id = ?1", Articolo.class);
+		query.setParameter(1, idOrdine);
+		return query.getResultList();
+	}
+
 }
